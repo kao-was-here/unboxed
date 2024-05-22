@@ -11,14 +11,14 @@ namespace Unboxed
         public struct BOXED_ENTRY_HEADER
         {
             public UInt32 Size;
-            public UInt32 Type;
+            public UInt16 Type;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct BOXED_FILE_HEADER
         {
             public BOXED_ENTRY_HEADER Header;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 46)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 56)]
             public byte[] UnknownBytes;
             public UInt32 FileNamePos;
             public UInt32 Unknown1Pos;
@@ -43,7 +43,7 @@ namespace Unboxed
                         reader.BaseStream.Seek(-headerSize, SeekOrigin.Current);
                         var rawData = reader.ReadBytes((int) entryHeader.Size);
                         current += entryHeader.Size;
-                        if (entryHeader.Type == 65541) HandleFileEntry(rawData);
+                        if (entryHeader.Type == 5) HandleFileEntry(rawData);
                     }
                 }
             }
